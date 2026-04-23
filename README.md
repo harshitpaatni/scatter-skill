@@ -41,6 +41,14 @@ The output has no recommendations, no rankings, no "next steps." If you want a d
 
 ---
 
+## Don't have Claude Code?
+
+You can run scatter in any chat interface (Claude.ai, ChatGPT, Gemini) using the **meta-prompt version**. See [META_PROMPT.md](./META_PROMPT.md) for the full instructions and the paste-ready prompt.
+
+The meta-prompt is roughly 70-85% as sharp as the skill version on most problems — some architectural fidelity is lost when everything has to happen in a single response, but it makes scatter accessible to anyone with a chat interface.
+
+---
+
 ## Install
 
 ### Option 1 — Git clone (recommended)
