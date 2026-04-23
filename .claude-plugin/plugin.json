@@ -1,0 +1,11 @@
+{
+  "name": "scatter-skill",
+  "version": "0.1.0",
+  "description": "Entropy-based divergent brainstorming skill. Widens a problem before any convergence happens.",
+  "author": {
+    "name": "Harshit Patni"
+  },
+  "repository": "https://github.com/harshitpaatni/scatter-skill",
+  "license": "MIT",
+  "keywords": ["brainstorming", "divergent-thinking", "ideation", "scatter", "swarm-intelligence"]
+}
