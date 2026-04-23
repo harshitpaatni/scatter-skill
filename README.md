@@ -46,7 +46,7 @@ The output has no recommendations, no rankings, no "next steps." If you want a d
 ### Option 1 — Git clone (recommended)
 
 ```bash
-git clone https://github.com/[your-username]/scatter-skill ~/.claude/skills/scatter
+git clone https://github.com/harshitpaatni/scatter-skill ~/.claude/skills/scatter
 ```
 
 Restart Claude Code.
