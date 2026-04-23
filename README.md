@@ -35,7 +35,7 @@ When you say **"scatter this"**, the skill:
 4. **Cross-pollinates 3 specific pairings** to surface emergent ideas neither parent could generate alone
 5. **Runs an Adjacent Possible agent** that finds under-explored *feasible* moves in the newly-opened space
 6. **Synthesizes for entropy preservation, not consensus** — reframings, provocations, under-explored moves, and explicitly-named territory the swarm did not touch
-7. **Generates an HTML report + markdown transcript**
+7. **Asks which format you want** (HTML, Word, Markdown, or transcript only), then generates the report — the full transcript is always saved
 
 The output has no recommendations, no rankings, no "next steps." If you want a decision, run the result through the LLM Council. Scatter widens; Council converges.
 
@@ -71,7 +71,7 @@ Trigger phrases:
 **Example:**
 > scatter this: I'm working on lipid nanoparticle delivery for mRNA therapeutics. We're trying to improve targeting to non-liver tissues. The standard moves (charge tuning, antibody conjugation, novel ionizable lipids) are all crowded. Where should I look that no one else is looking?
 
-You'll get an HTML report that opens automatically and a full markdown transcript saved alongside it.
+Before the swarm runs, scatter asks what format you want for the report: HTML (opens in browser), Word (.docx), Markdown (.md), or transcript only. The full markdown transcript is always saved regardless of choice.
 
 ---
 

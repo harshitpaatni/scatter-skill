@@ -1,6 +1,6 @@
 ---
 name: scatter
-description: "Widen a problem before converging. Takes any question and runs it through 5 transformation agents that each move the problem into a different concept-space (geometrically preventing convergence), then a 6th agent that finds under-explored feasible moves in the opened space. Output is deliberately unfinished — reframings, provocations, and named unexplored territory. No recommendations, no rankings. MANDATORY TRIGGERS: 'scatter this', 'scatter', 'widen this', 'scatter the problem', 'open this up', 'go wide on'. STRONG TRIGGERS (when combined with a problem at the generative origin of thinking): 'help me brainstorm', 'I'm thinking about X', 'where should I start with', 'I want to explore', 'I'm not sure how to think about'. Do NOT trigger on: decisions with formed options (use llm-council instead), refinement of existing ideas, requests for recommendations, factual questions, or any context where the user wants efficiency over exploration. DO trigger when the user is at the start of thinking and wants to make sure they don't converge prematurely on the obvious."
+description: "Widen a problem before converging. Takes any question and runs it through 5 transformation agents that each move the problem into a different concept-space (geometrically preventing convergence), then a 6th agent that finds under-explored feasible moves in the opened space. Output is deliberately unfinished — reframings, provocations, and named unexplored territory. No recommendations, no rankings. Before running the swarm, asks which report format you want: HTML, Word (.docx), Markdown, or transcript only. MANDATORY TRIGGERS: 'scatter this', 'scatter', 'widen this', 'scatter the problem', 'open this up', 'go wide on'. STRONG TRIGGERS (when combined with a problem at the generative origin of thinking): 'help me brainstorm', 'I'm thinking about X', 'where should I start with', 'I want to explore', 'I'm not sure how to think about'. Do NOT trigger on: decisions with formed options (use llm-council instead), refinement of existing ideas, requests for recommendations, factual questions, or any context where the user wants efficiency over exploration. DO trigger when the user is at the start of thinking and wants to make sure they don't converge prematurely on the obvious."
 ---
 
 # Scatter
@@ -132,6 +132,19 @@ Don't spend more than 30 seconds. Looking for the 1-2 files that would let agent
 If the question is too vague, ask one clarifying question. Just one. Then proceed.
 
 **Detect domain type.** Before spawning agents, determine: is this a technical/R&D problem, a strategic/business problem, a creative/conceptual problem, or a personal/life problem? Pass this domain type to each agent so they can apply appropriate technical-respect. For technical problems, agents must respect the constraints of the user's domain and ask questions where their transformation requires technical context they don't have.
+
+**C. Ask for output format.** After framing the question and detecting domain type, present this prompt to the user before proceeding:
+
+> Before I run the swarm, what format would you like the report in?
+>
+> 1. HTML (visual report, opens in browser) — default
+> 2. Word document (.docx, easy to share)
+> 3. Markdown (.md, plain text)
+> 4. Transcript only (skip the report)
+>
+> Reply with a number or format name. The full transcript is saved either way.
+
+Wait for the user's response before proceeding to Step 2.
 
 ### step 2: spawn Pass 1 agents (5 in parallel)
 
@@ -273,21 +286,29 @@ EXPLICIT PROHIBITIONS:
 The user wants to leave this session with a wider, sharper, more uncomfortable problem space than they started with. Your job is to deliver that.
 ```
 
-### step 6: generate the scatter report (HTML)
+### step 6: generate the scatter report
 
-After synthesis, generate `scatter-report-[timestamp].html` in the user's workspace.
+After synthesis, generate the report artifact based on the format the user chose in Step 1. All formats share the same content structure: synthesis prominent at the top, agent outputs as an appendix (collapsible or clearly delimited).
 
-The report contains:
+**Content structure (all formats):**
 1. **The framed question** at the top
 2. **The synthesis** prominently displayed (this is what most users will read)
-3. **Collapsible sections** for each Pass 1 agent's full output, each cross-pollination, and the Pass 2 output (collapsed by default)
+3. **Collapsible or delimited sections** for each Pass 1 agent's full output, each cross-pollination, and the Pass 2 output
 4. **A footer** showing timestamp
 
-Style: clean, white background, readable sans-serif (system font stack), subtle borders, soft accent colors to distinguish agent sections. Looks like a thoughtful briefing document. Open the file after generating it.
+**Critical formatting rule:** Reframings and Provocations sections at the top, ordered by entropy (most destabilizing first). "Under-explored Feasible Moves" comes third. "What the Swarm Did Not Touch" gets equal visual weight — it is not a footnote.
 
-**Critical formatting rule for the report:** Reframings and Provocations sections at the top, ordered by entropy (most destabilizing first). The "Under-explored Feasible Moves" section comes third. The "What the Swarm Did Not Touch" section is given equal visual weight to the other sections — it is not a footnote.
+**If HTML (option 1):** Generate `scatter-report-[timestamp].html`. Style: clean, white background, readable sans-serif (system font stack), subtle borders, soft accent colors to distinguish agent sections. Agent sections collapsed by default. Open the file in the browser after generating it.
+
+**If Word document (option 2):** Generate `scatter-report-[timestamp].docx`. Use the docx skill if available (`~/.claude/skills/docx/SKILL.md`). If not available, generate the .docx using python-docx (install if needed). Same structure as the HTML report — synthesis first, agent outputs as an appendix section. Use Word heading styles (Heading 1, Heading 2) so the document has a navigable outline.
+
+**If Markdown (option 3):** Generate `scatter-report-[timestamp].md`. Use markdown headers (`##`, `###`) for sections. Use `<details><summary>Agent name</summary>...</details>` tags for collapsible agent sections. Same structure as HTML — synthesis at the top, agent outputs below the fold.
+
+**If Transcript only (option 4):** Skip Step 6 entirely. Step 7 saves the full transcript as usual.
 
 ### step 7: save the full transcript
+
+Runs regardless of format choice — the transcript is always saved.
 
 Save `scatter-transcript-[timestamp].md` in the same location with:
 - Original question
@@ -302,11 +323,13 @@ Save `scatter-transcript-[timestamp].md` in the same location with:
 
 ## output format
 
-Every scatter session produces two files:
+Every scatter session produces one or two files based on the format chosen in Step 1:
 
 ```
-scatter-report-[timestamp].html    # synthesis-forward, agents collapsible
-scatter-transcript-[timestamp].md  # full transcript for reference
+scatter-report-[timestamp].html    # if HTML chosen (synthesis-forward, agents collapsible)
+scatter-report-[timestamp].docx    # if Word chosen
+scatter-report-[timestamp].md      # if Markdown chosen
+scatter-transcript-[timestamp].md  # always saved, full record
 ```
 
 ---
