@@ -6,6 +6,12 @@ Inspired by the convergence of [swarm intelligence](https://en.wikipedia.org/wik
 
 ---
 
+## Status
+
+This is a working experiment, not a maintained library. The architecture is real; the implementation is not hardened. Expect rough edges. Fork it, break it, improve it.
+
+---
+
 ## The Problem
 
 Ask Claude to brainstorm and you get five plausible variations of the most obvious answer. That's not Claude being lazy — it's how language models work. They're trained to produce the response that looks like a high-quality version of what most people have written about similar prompts. The conventional answer is the default.
